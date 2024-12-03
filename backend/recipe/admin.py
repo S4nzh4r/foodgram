@@ -58,7 +58,7 @@ class RecipeAdmin(admin.ModelAdmin):
     """
 
     list_display = ('id', 'author', 'name', 'pub_date', 'in_favorite_count')
-    search_fields = ('name', 'author')
+    search_fields = ('name',)
     list_filter = ('pub_date', 'author', 'tags')
     filter_horizontal = ('ingredients', 'tags')
     inlines = [IngredientsInline]
