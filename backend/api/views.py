@@ -144,7 +144,6 @@ def redirect_from_short_link(request, short_code):
     try:
         recipe = get_object_or_404(Recipe, short_code=short_code)
         base_url = settings.BASE_URL
-        print(short_code)
-        return redirect(f'{base_url}/api/recipes/{recipe.pk}/')
+        return redirect(f'{base_url}/recipes/{recipe.pk}')
     except Exception:
         return HttpResponseNotFound('Ошибка в ссылке!')
