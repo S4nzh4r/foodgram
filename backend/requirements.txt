@@ -9,3 +9,4 @@ python-dotenv==1.0.1
 PyYAML==6.0
 djangorestframework-simplejwt==4.7.2
 django-filter==23.1
+flake8==6.0.0
