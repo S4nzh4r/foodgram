@@ -117,18 +117,19 @@ class RecipeViewSet(viewsets.ModelViewSet):
             return HttpResponse('Your shopping cart is empty.',
                                 content_type='text/plain')
 
-        shopping_list = []
+        shopping_list = {}
         for item in shopping_cart_items:
             ingredients = RecipeIngredient.objects.filter(recipe=item.recipe)
             for ingredient in ingredients:
-                shopping_list.append(
-                    f'* {ingredient.ingredients.name} '
-                    f'({ingredient.ingredients.measurement_unit}) - '
-                    f'{ingredient.amount}'
-                )
+                key_name = (f'* {ingredient.ingredients.name} '
+                            f'({ingredient.ingredients.measurement_unit}) -')
+                if not shopping_list.get(key_name, None):
+                    shopping_list[key_name] = ingredient.amount
+                shopping_list[key_name] += ingredient.amount
 
         file_content = 'Список покупок: \n'
-        file_content += '\n'.join(shopping_list)
+        for ingredient, amount in shopping_list.items():
+            file_content += f'{ingredient} {amount} \n'
         filename = 'shopping_list.txt'
 
         response = HttpResponse(file_content, content_type='text/plain')

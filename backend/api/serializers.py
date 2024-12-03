@@ -1,4 +1,3 @@
-"""Работа сеализаторов рецептов."""
 from django.shortcuts import get_object_or_404
 from rest_framework import serializers, status
 from rest_framework.exceptions import ValidationError
@@ -105,14 +104,15 @@ class BaseRecipeSerializer(serializers.ModelSerializer):
         """Метод поля на проверку в избранное."""
         user = self.context.get('request').user
         if not user.is_anonymous:
-            return Favourite.objects.filter(recipe=obj).exists()
+            return Favourite.objects.filter(author=user, recipe=obj).exists()
         return False
 
     def get_is_in_shopping_cart(self, obj):
         """Метод поля на проверку в списке покупок."""
         user = self.context.get('request').user
         if not user.is_anonymous:
-            return ShoppingCart.objects.filter(recipe=obj).exists()
+            return ShoppingCart.objects.filter(
+                author=user, recipe=obj).exists()
         return False
 
 
@@ -179,7 +179,7 @@ class RecipeWriteSerializer(BaseRecipeSerializer):
         ingredient_list = []
 
         for ingredient in ingredients:
-            item = get_object_or_404(Ingredient, name=ingredient.get('id'))
+            item = get_object_or_404(Ingredient, pk=ingredient.get('id').pk)
             if item in ingredient_list:
                 raise ValidationError('Ингредиенты повторяются!')
 

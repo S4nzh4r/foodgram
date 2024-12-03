@@ -58,8 +58,6 @@ class UserReadSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     """Класс Сеализатор Пользователей."""
 
-    # avatar = serializers.SerializerMethodField()
-    # is_subscribed = serializers.SerializerMethodField()
     username = serializers.CharField(
         max_length=MAX_LENGTH,
         validators=(

@@ -107,7 +107,7 @@ class UserViewSet(viewsets.ModelViewSet):
             return Response('Успешная отписка',
                             status=status.HTTP_204_NO_CONTENT)
         return Response({'errors': 'Объект не найден'},
-                        status=status.HTTP_404_NOT_FOUND)
+                        status=status.HTTP_400_BAD_REQUEST)
 
     @action(detail=False,
             methods=['get'],
