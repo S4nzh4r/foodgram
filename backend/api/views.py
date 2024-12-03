@@ -123,9 +123,10 @@ class RecipeViewSet(viewsets.ModelViewSet):
             for ingredient in ingredients:
                 key_name = (f'* {ingredient.ingredients.name} '
                             f'({ingredient.ingredients.measurement_unit}) -')
-                if not shopping_list.get(key_name, None):
-                    shopping_list[key_name] = ingredient.amount
-                shopping_list[key_name] += ingredient.amount
+                if shopping_list.get(key_name, None):
+                    shopping_list[key_name] += ingredient.amount
+                    continue
+                shopping_list[key_name] = ingredient.amount
 
         file_content = 'Список покупок: \n'
         for ingredient, amount in shopping_list.items():
