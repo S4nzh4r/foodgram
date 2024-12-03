@@ -87,7 +87,7 @@ class UserViewSet(viewsets.ModelViewSet):
 
     @action(detail=True,
             methods=['post', 'delete'],
-            permission_classes=[IsAuthenticated,])
+            permission_classes=[IsAuthenticated, ])
     def subscribe(self, request, *args, **kwargs):
         """Создание и удаление подписки."""
         author = get_object_or_404(CustomUser, id=self.kwargs.get('pk'))
@@ -111,7 +111,7 @@ class UserViewSet(viewsets.ModelViewSet):
 
     @action(detail=False,
             methods=['get'],
-            permission_classes=[IsAuthenticated,])
+            permission_classes=[IsAuthenticated, ])
     def subscriptions(self, request):
         """Отображает все подписки пользователя."""
         follows = Follow.objects.filter(user=self.request.user)

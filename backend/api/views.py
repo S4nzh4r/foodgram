@@ -61,9 +61,9 @@ class RecipeViewSet(viewsets.ModelViewSet):
         return RecipeWriteSerializer
 
     @action(detail=True,
-            methods=['get',],
+            methods=['get', ],
             url_path='get-link',
-            permission_classes=[AllowAny,])
+            permission_classes=[AllowAny, ])
     def get_link(self, request, pk=None):
         """Метод для получения короткой ссылки."""
         recipe = self.get_object()
@@ -76,7 +76,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
 
     @action(detail=True,
             methods=['post', 'delete'],
-            permission_classes=[IsAuthenticated,])
+            permission_classes=[IsAuthenticated, ])
     def favorite(self, request, *args, **kwargs):
         """Метод для добавления избранного."""
         recipe = get_object_or_404(Recipe, pk=self.kwargs.get('pk'))
@@ -91,7 +91,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
 
     @action(detail=True,
             methods=['post', 'delete'],
-            permission_classes=[IsAuthenticated,])
+            permission_classes=[IsAuthenticated, ])
     def shopping_cart(self, request, *args, **kwargs):
         """Метод для добавления в список покупок."""
         recipe = get_object_or_404(Recipe, pk=self.kwargs.get('pk'))
@@ -106,7 +106,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
 
     @action(detail=False,
             methods=['get'],
-            permission_classes=[IsAuthenticated,])
+            permission_classes=[IsAuthenticated, ])
     def download_shopping_cart(self, request, *args, **kwargs):
         """Метод для скачивания списка покупок."""
         shopping_cart_items = (ShoppingCart
