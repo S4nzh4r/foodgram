@@ -9,12 +9,12 @@ volumes:
 services:
   db:
     image: postgres:13.10
-    env_file: ../.env
+    env_file: .env
     volumes:
       - pg_foodgram_data:/var/lib/postgresql/data
   backend:
     image: sanzhar16/foodgram_backend
-    env_file: ../.env
+    env_file: .env
     volumes:
       - foodgram_static:/backend_static
       - foodgram_media:/app/media
@@ -24,7 +24,7 @@ services:
       - foodgram_static:/app/result_build
   nginx:
     image: sanzhar16/foodgram_nginx
-    env_file: ../.env
+    env_file: .env
     ports:
       - "8050:80"
     volumes:
