@@ -42,7 +42,7 @@ class IngredientViewSet(mixins.ListModelMixin,
     permission_classes = (AllowAny, )
     filter_backends = (IngredientSearchFilter, )
     # Поиск с символом в поле оказывается не работает на sqlite3
-    search_fields = ('@name',)
+    search_fields = ('^name',)
 
 
 class RecipeViewSet(viewsets.ModelViewSet):
