@@ -13,6 +13,8 @@ services:
     volumes:
       - pg_foodgram_data:/var/lib/postgresql/data
   backend:
+    depends_on:
+      - db
     image: sanzhar16/foodgram_backend
     env_file: .env
     volumes:
@@ -23,6 +25,9 @@ services:
     volumes:
       - foodgram_static:/app/result_build
   nginx:
+    depends_on:
+      - frontend
+      - backend
     image: sanzhar16/foodgram_nginx
     env_file: .env
     ports:
