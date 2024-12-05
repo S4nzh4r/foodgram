@@ -1,4 +1,5 @@
 from django.shortcuts import get_object_or_404
+from drf_extra_fields.fields import Base64ImageField
 from rest_framework import serializers, status
 from rest_framework.exceptions import ValidationError
 
@@ -10,7 +11,7 @@ from recipe.models import (Favourite,
                            RecipeIngredient,
                            ShoppingCart,
                            Tag)
-from user.serializers import Base64ImageField, UserReadSerializer
+from user.serializers import UserReadSerializer
 
 
 class IngredientSerializer(serializers.ModelSerializer):
@@ -152,7 +153,7 @@ class RecipeWriteSerializer(BaseRecipeSerializer):
         queryset=Tag.objects.all(),
         many=True
     )
-    image = Base64ImageField(required=True)
+    image = Base64ImageField()
     author = serializers.HiddenField(
         default=serializers.CurrentUserDefault()
     )
@@ -168,6 +169,15 @@ class RecipeWriteSerializer(BaseRecipeSerializer):
                 message='Рецепт уже добавлен!'
             ),
         )
+
+    def validate_image(self, value):
+        """Метод валидаций поля image."""
+        image = value
+
+        if not image:
+            raise ValidationError('Поле image не должно быть пустым!')
+
+        return value
 
     def validate_ingredients(self, value):
         """Валидация поля ингредиентов."""

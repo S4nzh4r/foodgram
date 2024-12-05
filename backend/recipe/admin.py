@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.core.exceptions import ValidationError
 
 from .models import (Favourite,
                      Follow,
@@ -12,11 +13,32 @@ from .models import (Favourite,
 class IngredientsInline(admin.StackedInline):
     """Админ-зона для интеграции добавления ингридиентов в рецепты.
 
-    Сразу доступно добавление 3х ингрдиентов.
+    Сразу доступно добавление 2х ингрдиентов.
     """
 
     model = RecipeIngredient
     extra = 2
+
+    def get_formset(self, request, obj, **kwargs):
+        """Метод для настройки formset."""
+        formset = super().get_formset(request, obj, **kwargs)
+
+        class IngredientsValidate(formset):
+            def clean(self):
+                super().clean()
+
+                if not any(self.cleaned_data):
+                    raise ValidationError('Добавьте ингредиент!')
+
+                if not any(
+                    form.cleaned_data for form in self.forms
+                    if not form.cleaned_data.get('DELETE', False)
+                ):
+                    raise ValidationError(
+                        'Нельзя удалить все ингредиенты из рецепта!'
+                    )
+
+        return IngredientsValidate
 
 
 class FollowAdmin(admin.ModelAdmin):

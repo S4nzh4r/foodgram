@@ -10,3 +10,4 @@ PyYAML==6.0
 djangorestframework-simplejwt==4.7.2
 django-filter==23.1
 flake8==6.0.0
+drf-extra-fields==3.1.0
