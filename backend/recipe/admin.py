@@ -1,7 +1,5 @@
 from django.contrib import admin
 from django.core.exceptions import ValidationError
-from django.forms.models import BaseModelFormSet, ModelForm
-from django.http.request import HttpRequest
 
 from .models import (Favourite,
                      Follow,
