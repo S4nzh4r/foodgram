@@ -193,8 +193,8 @@ class RecipeWriteSerializer(BaseRecipeSerializer):
             if item in ingredient_list:
                 raise ValidationError('Ингредиенты повторяются!')
 
-            if int(ingredient.get('amount')) <= 0:
-                raise ValidationError('Количество должно быть больше нуля!')
+            if int(ingredient.get('amount')) <= 1:
+                raise ValidationError('Количество должно быть больше единицы!')
 
             ingredient_list.append(item)
 

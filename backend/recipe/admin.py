@@ -1,5 +1,7 @@
 from django.contrib import admin
 from django.core.exceptions import ValidationError
+from django.forms.models import BaseModelFormSet, ModelForm
+from django.http.request import HttpRequest
 
 from .models import (Favourite,
                      Follow,
@@ -25,18 +27,25 @@ class IngredientsInline(admin.StackedInline):
 
         class IngredientsValidate(formset):
             def clean(self):
-                super().clean()
+                super(IngredientsValidate, self).clean()
 
-                if not any(self.cleaned_data):
-                    raise ValidationError('Добавьте ингредиент!')
+                try:
+                    if not any(self.cleaned_data):
+                        raise ValidationError(
+                            'Добавьте ингредиент!'
+                        )
 
-                if not any(
-                    form.cleaned_data for form in self.forms
-                    if not form.cleaned_data.get('DELETE', False)
-                ):
-                    raise ValidationError(
-                        'Нельзя удалить все ингредиенты из рецепта!'
-                    )
+                    if not any(
+                        form.cleaned_data for form in self.forms
+                        if not form.cleaned_data.get('DELETE', False)
+                    ):
+                        raise ValidationError(
+                            'Нельзя удалить все ингредиенты из рецепта!'
+                        )
+                # Тут как я узнал сам джанго вызывал проблему
+                # при не правильной форме, игнорируя валидаций модели
+                except AttributeError:
+                    pass
 
         return IngredientsValidate
 

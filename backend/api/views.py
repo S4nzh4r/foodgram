@@ -41,8 +41,9 @@ class IngredientViewSet(mixins.ListModelMixin,
     serializer_class = IngredientSerializer
     permission_classes = (AllowAny, )
     filter_backends = (IngredientSearchFilter, )
-    # Поиск с символом в поле оказывается не работает на sqlite3
-    search_fields = ('^name',)
+    # У меня с поиском всё работает, и тесты в постмане проходят
+    # Не понимаю почему не работает
+    search_fields = ('name',)  # символ убрал может теперь получится.
 
 
 class RecipeViewSet(viewsets.ModelViewSet):
